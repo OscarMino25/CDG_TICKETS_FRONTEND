@@ -10,6 +10,7 @@ import { Observable, tap } from 'rxjs';
 })
 export class AuthService {
   private LOGIN_URL = 'http://localhost:8000/api/login';
+  private USER_URL = 'http://localhost:8000/api/me';
   private tokenKey = 'authToken';
 
   constructor(private httpClient: HttpClient, private router: Router) { }
@@ -52,6 +53,18 @@ export class AuthService {
   logout(): void{
     localStorage.removeItem(this.tokenKey);
     this.router.navigate(['/login']);
+  }
+
+  getCurrentUser(): Observable<any> {
+    const token = this.getToken();
+    if (!token) {
+      return new Observable(observer => observer.next(null));
+    }
+    return this.httpClient.get<any>(this.USER_URL, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   }
 
 }
