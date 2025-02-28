@@ -1,0 +1,60 @@
+<div
+	class="bg-customDark-50 absolute top-0 left-0 bg-gradient-to-r from-customDark-50 via-customDark-200 to-customDark-400 bottom-0 h-full w-full overflow-hidden">
+</div>
+<div class="relative   min-h-screen  sm:flex sm:flex-row  justify-center bg-transparent rounded-3xl shadow-xl">
+	<div class="flex-col flex self-center lg:px-15 sm:max-w-4xl xl:max-w-md z-15">
+		<div class="self-start hidden lg:flex flex-col transform -translate-x-10">
+
+		</div>
+	</div>
+	<div class="flex justify-center self-center z-10">
+		<div class="p-10 bg-white bg-opacity-98 mx-auto rounded-3xl w-96">
+			<div class="mb-7 flex justify-center flex-col items-center">
+				<img src="CDG-01.png" alt="logo CDGservices" class="w-900 sm:w-1400 lg:w-1500 m-0 p-0">
+
+			</div>
+
+
+
+			<div class="space-y-6">
+				<div>
+					<input [(ngModel)]="email"
+						class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-customBlue-400 text-center"
+						type="text" placeholder="Usuario">
+				</div>
+
+				<div class="relative" x-data="{ show: true }">
+					<input [(ngModel)]="password" placeholder="Contraseña" type="password" style="color: #000;"
+						class="text-sm text-gray-200 px-4 py-3 rounded-lg w-full bg-gray-200 focus:bg-gray-100 border border-gray-200 focus:outline-none focus:border-purple-400 text-center">
+					<div class="flex items-center absolute inset-y-0 right-0 mr-3 text-sm leading-5">
+					</div>
+				</div>
+
+				<div class="flex items-center justify-between">
+				</div>
+
+				<div>
+					<button (click)="login()" type="submit"
+						class="w-full flex justify-center bg-gradient-to-r from-customDark-50 via-customDark-200 to-customDark-400 hover:bg-gradient-to-r hover:from-customDark-200 hover:to-customDark-500 text-white p-3 rounded-lg tracking-wide font-semibold cursor-pointer transition ease-in duration-500">
+						Iniciar Sesión
+					</button>
+				</div>
+
+				<div class="flex items-center justify-center space-x-2 my-5">
+					<span class="h-px w-16 bg-gray-100"></span>
+				</div>
+
+				<div class="flex justify-center gap-5 w-full ">
+				</div>
+			</div>
+
+			<div class="mt-7 text-center text-gray-400 text-xs">
+				<span>
+					Copyright CDGservices © 2025-2025
+					<a></a>
+				</span>
+			</div>
+		</div>
+	</div>
+
+</div>
