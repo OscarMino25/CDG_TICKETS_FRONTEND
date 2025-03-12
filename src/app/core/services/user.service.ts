@@ -9,7 +9,7 @@ import { AuthService } from './auth.service';
 export class UserService {
   private apiUrl = 'http://localhost:8000/api/users'; // URL de tu API
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
@@ -42,4 +42,12 @@ export class UserService {
   deleteUser(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
   }
+
+  // Servicio para buscar usuarios
+  searchUsers(query: string): Observable<any> {
+    const url = `${this.apiUrl}/search?query=${query}`;
+    return this.http.get<any>(url, { headers: this.getAuthHeaders() });
+  }
+
+
 }

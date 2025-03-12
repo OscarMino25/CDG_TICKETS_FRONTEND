@@ -10,22 +10,26 @@ export const routes: Routes = [
             {
                 path: 'dashboard',
                 loadComponent: () => import('./business/dashboard/dashboard.component'),
-                canActivate:[AuthGuard]
+                canActivate:[AuthGuard],
+                data: { breadcrumb: 'Dashboard' }
             },
             {
                 path: 'profile',
                 loadComponent: () => import('./business/profile/profile.component'),
-                canActivate:[AuthGuard]
+                canActivate:[AuthGuard],
+                data: { breadcrumb: 'Perfil' }
             },
             {
                 path: 'tables',
                 loadComponent: () => import('./business/tables/tables.component'),
-                canActivate:[AuthGuard]
+                canActivate:[AuthGuard],
+                data: { breadcrumb: 'Tables' }
             },
             {
                 path: 'admusuarios',
                 loadComponent: () => import('./business/admusuarios/admusuarios.component'),
-                canActivate:[AuthGuard]
+                canActivate:[AuthGuard],
+                data: { breadcrumb: 'Administración / Administración de Usuarios' }
             },
             {
                 path: '',

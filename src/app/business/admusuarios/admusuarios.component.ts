@@ -15,6 +15,7 @@ export default class AdmusuariosComponent implements OnInit {
   users: any[] = [];
   modalAbierto = false; // Estado del modal
   esEdicion = false; // Controla si estamos en modo de edición
+  searchQuery: string = '';  // Variable para almacenar el término de búsqueda
 
   // Este objeto será reutilizado para la creación y edición de usuarios
   nuevoUsuario = {
@@ -26,7 +27,7 @@ export default class AdmusuariosComponent implements OnInit {
     role: 'user'
   };
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.loadUsers();
@@ -42,6 +43,22 @@ export default class AdmusuariosComponent implements OnInit {
       }
     });
   }
+
+  buscarUsuarios(): void {
+    if (this.searchQuery.length > 2) {  // Solo busca si la longitud es mayor a 2
+      this.userService.searchUsers(this.searchQuery).subscribe({
+        next: (data) => {
+          this.users = data;
+        },
+        error: (error) => {
+          console.error('Error buscando usuarios', error);
+        }
+      });
+    } else {
+      this.loadUsers(); // Si no hay búsqueda, recarga todos los usuarios
+    }
+  }
+
 
   abrirModal(): void {
     this.modalAbierto = true;
