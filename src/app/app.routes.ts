@@ -23,10 +23,16 @@ export const routes: Routes = [
                 canActivate:[AuthGuard]
             },
             {
+                path: 'admusuarios',
+                loadComponent: () => import('./business/admusuarios/admusuarios.component'),
+                canActivate:[AuthGuard]
+            },
+            {
                 path: '',
                 redirectTo: 'dashboard',
                 pathMatch: 'full'
-            }
+            },
+            
 
         ]
     },
