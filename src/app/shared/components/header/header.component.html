@@ -37,17 +37,17 @@
         {{ username }}
       </button>
     
-      <!-- Dropdown Menu -->
-      <div *ngIf="dropdownOpen" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
-        <ul class="py-2">
-          <li>
-            <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Perfil</button>
-          </li>
-          <li>
-            <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" (click)="logout()">Cerrar Sesión</button>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+    <!-- Dropdown Menu -->
+    <div *ngIf="dropdownOpen"
+    class="fixed top-12 right-5 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+  <ul class="py-2">
+    <li>
+      <!-- Botón para navegar al perfil -->
+      <button (click)="navigateToProfile()" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Perfil</button>
+    </li>
+    <li>
+      <!-- Botón para cerrar sesión -->
+      <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" (click)="logout()">Cerrar Sesión</button>
+    </li>
+  </ul>
 </div>

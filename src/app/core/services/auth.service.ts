@@ -15,42 +15,57 @@ export class AuthService {
 
   constructor(private httpClient: HttpClient, private router: Router) { }
 
-  login(email: string, password: string): Observable <any>{
-    return this.httpClient.post<any>(this.LOGIN_URL, {email, password}).pipe(
-      tap(response =>{
-        if(response.token){
-          console.log(response.token);
-          this.setToken(response.token);
+  login(email: string, password: string): Observable<any> {
+    return this.httpClient.post<any>(this.LOGIN_URL, { email, password }).pipe(
+      tap({
+        next: (response) => {
+          if (response.token) {
+            this.setToken(response.token);
+          }
+        },
+        error: (error) => {
+          console.error('Error en login:', error);
+          throw error; // Esto permite que el componente capture el error en el subscribe
         }
       })
-    )
+    );
   }
 
   private setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
   }
 
-  public getToken():string|null{
-    if(typeof window !== 'undefined'){
+  public getToken(): string | null {
+    if (typeof window !== 'undefined') {
       return localStorage.getItem(this.tokenKey);
-    }else{
+    } else {
       return null;
     }
-    
+
   }
 
-  isAuthenticated(): boolean{
+  isAuthenticated(): boolean {
     const token = this.getToken();
-    if(!token){
+    if (!token) return false;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const exp = payload.exp * 1000;
+
+      if (Date.now() >= exp) {
+        this.logout(); // Forzar logout si el token ya expiró
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Token inválido. Cerrando sesión...');
+      this.logout(); // Forzar logout si el token es inválido
       return false;
     }
-
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const exp = payload.exp * 1000;
-    return Date.now() < exp;
   }
 
-  logout(): void{
+  logout(): void {
     localStorage.removeItem(this.tokenKey);
     this.router.navigate(['/login']);
   }

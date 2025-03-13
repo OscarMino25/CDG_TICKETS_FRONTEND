@@ -1,60 +1,61 @@
 <div
-	class="bg-customDark-50 absolute top-0 left-0 bg-gradient-to-r from-customDark-50 via-customDark-200 to-customDark-400 bottom-0 h-full w-full overflow-hidden">
+  class="bg-customDark-50 absolute top-0 left-0 bg-gradient-to-r from-customDark-50 via-customDark-200 to-customDark-400 bottom-0 h-full w-full overflow-hidden">
 </div>
-<div class="relative   min-h-screen  sm:flex sm:flex-row  justify-center bg-transparent rounded-3xl shadow-xl">
-	<div class="flex-col flex self-center lg:px-15 sm:max-w-4xl xl:max-w-md z-15">
-		<div class="self-start hidden lg:flex flex-col transform -translate-x-10">
+<div class="relative min-h-screen sm:flex sm:flex-row justify-center bg-transparent rounded-3xl shadow-xl">
+  <div class="flex justify-center self-center z-10">
+    <div class="p-10 bg-white bg-opacity-98 mx-auto rounded-3xl w-96">
+      <div class="mb-7 flex justify-center flex-col items-center">
+        <img src="CDG-01.png" alt="logo CDGservices" class="w-900 sm:w-1400 lg:w-1500 m-0 p-0">
+      </div>
 
-		</div>
-	</div>
-	<div class="flex justify-center self-center z-10">
-		<div class="p-10 bg-white bg-opacity-98 mx-auto rounded-3xl w-96">
-			<div class="mb-7 flex justify-center flex-col items-center">
-				<img src="CDG-01.png" alt="logo CDGservices" class="w-900 sm:w-1400 lg:w-1500 m-0 p-0">
+      <!-- ALERTA DE ERROR -->
+      <div
+        *ngIf="errorMessage"
+        class="relative block w-full rounded-lg bg-red-500 px-4 py-4 text-white transition-opacity mb-4"
+      >
+        <div class="absolute top-3 left-4">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
+            <path fill-rule="evenodd"
+              d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+              clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-8 mr-12">
+          <h5 class="text-lg font-semibold">Error</h5>
+          <p class="mt-1 text-sm">{{ errorMessage }}</p>
+        </div>
+        <button (click)="closeAlert()" class="absolute top-2 right-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <!-- FIN ALERTA -->
 
-			</div>
+      <div class="space-y-6">
+        <div>
+          <input [(ngModel)]="email"
+            class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-customBlue-400 text-center"
+            type="text" placeholder="Usuario">
+        </div>
 
+        <div class="relative">
+          <input [(ngModel)]="password" placeholder="Contraseña" type="password" style="color: #000;"
+            class="text-sm text-gray-200 px-4 py-3 rounded-lg w-full bg-gray-200 focus:bg-gray-100 border border-gray-200 focus:outline-none focus:border-purple-400 text-center">
+        </div>
 
+        <div>
+          <button (click)="login()" type="submit"
+            class="w-full flex justify-center bg-gradient-to-r from-customDark-50 via-customDark-200 to-customDark-400 hover:bg-gradient-to-r hover:from-customDark-200 hover:to-customDark-500 text-white p-3 rounded-lg tracking-wide font-semibold cursor-pointer transition ease-in duration-500">
+            Iniciar Sesión
+          </button>
+        </div>
+      </div>
 
-			<div class="space-y-6">
-				<div>
-					<input [(ngModel)]="email"
-						class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-customBlue-400 text-center"
-						type="text" placeholder="Usuario">
-				</div>
-
-				<div class="relative" x-data="{ show: true }">
-					<input [(ngModel)]="password" placeholder="Contraseña" type="password" style="color: #000;"
-						class="text-sm text-gray-200 px-4 py-3 rounded-lg w-full bg-gray-200 focus:bg-gray-100 border border-gray-200 focus:outline-none focus:border-purple-400 text-center">
-					<div class="flex items-center absolute inset-y-0 right-0 mr-3 text-sm leading-5">
-					</div>
-				</div>
-
-				<div class="flex items-center justify-between">
-				</div>
-
-				<div>
-					<button (click)="login()" type="submit"
-						class="w-full flex justify-center bg-gradient-to-r from-customDark-50 via-customDark-200 to-customDark-400 hover:bg-gradient-to-r hover:from-customDark-200 hover:to-customDark-500 text-white p-3 rounded-lg tracking-wide font-semibold cursor-pointer transition ease-in duration-500">
-						Iniciar Sesión
-					</button>
-				</div>
-
-				<div class="flex items-center justify-center space-x-2 my-5">
-					<span class="h-px w-16 bg-gray-100"></span>
-				</div>
-
-				<div class="flex justify-center gap-5 w-full ">
-				</div>
-			</div>
-
-			<div class="mt-7 text-center text-gray-400 text-xs">
-				<span>
-					Copyright CDGservices © 2025-2025
-					<a></a>
-				</span>
-			</div>
-		</div>
-	</div>
-
+      <div class="mt-7 text-center text-gray-400 text-xs">
+        <span>Copyright CDGservices © 2025-2025</span>
+      </div>
+    </div>
+  </div>
 </div>

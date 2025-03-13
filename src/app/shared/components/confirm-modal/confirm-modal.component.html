@@ -1,0 +1,17 @@
+<div *ngIf="isVisible" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
+      <div class="flex items-center justify-center mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 7.25C12.4142 7.25 12.75 7.58579 12.75 8V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V8C11.25 7.58579 11.5858 7.25 12 7.25Z"></path>
+          <path d="M12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z"></path>
+          <path d="M12 2C8.68629 2 6 4.68629 6 8C6 11.3137 8.68629 14 12 14C15.3137 14 18 11.3137 18 8C18 4.68629 15.3137 2 12 2Z"></path>
+        </svg>
+      </div>
+      <h3 class="text-lg font-medium text-center text-gray-900 mb-4">¿Estás seguro de eliminar este usuario?</h3>
+      <div class="flex justify-between">
+        <button (click)="confirmDelete()" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-700">Eliminar</button>
+        <button (click)="cancel()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400">Cancelar</button>
+      </div>
+    </div>
+  </div>
+  

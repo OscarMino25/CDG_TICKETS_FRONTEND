@@ -1,0 +1,8 @@
+<div *ngIf="alert" class="fixed top-0 right-0 m-4 p-4 rounded-md shadow-lg"
+     [ngClass]="{
+       'bg-green-500': alert.type === 'success',
+       'bg-red-500': alert.type === 'error',
+       'bg-blue-500': alert.type === 'info'
+     }">
+  <p class="text-white">{{ alert.message }}</p>
+</div>

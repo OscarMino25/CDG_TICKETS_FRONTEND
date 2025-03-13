@@ -71,6 +71,12 @@ export class HeaderComponent implements OnInit {
     this.dropdownOpen = !this.dropdownOpen;
   }
 
+  // Método para navegar al perfil
+  navigateToProfile(): void {
+    this.router.navigate(['/profile']);
+    this.dropdownOpen = false; // Cerrar el dropdown al hacer clic en el perfil
+  }
+
   // Cierra sesión y redirige al login
   logout(): void {
     this.authService.logout();

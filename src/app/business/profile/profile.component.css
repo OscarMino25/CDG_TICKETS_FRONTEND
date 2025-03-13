@@ -1,0 +1,14 @@
+/* Estilo para que las alertas floten de manera más atractiva */
+.fixed {
+    position: fixed;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .bg-green-500 {
+    background-color: #48bb78;
+  }
+  
+  .bg-red-500 {
+    background-color: #f56565;
+  }
+  
