@@ -32,6 +32,12 @@ export const routes: Routes = [
                 data: { breadcrumb: 'Administración / Administración de Usuarios' }
             },
             {
+                path: 'admrolespermisos',
+                loadComponent: () => import('./business/admrolespermisos/roles-permisos/roles-permisos.component'),
+                canActivate:[AuthGuard],
+                data: { breadcrumb: 'Administración / Administración de Roles y Permisos' }
+            },
+            {
                 path: '',
                 redirectTo: 'dashboard',
                 pathMatch: 'full'
