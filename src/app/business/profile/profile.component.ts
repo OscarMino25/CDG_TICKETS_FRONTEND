@@ -17,6 +17,7 @@ export default class ProfileComponent implements OnInit, OnDestroy {
   profileForm: FormGroup;
   passwordForm: FormGroup;
   user: any;
+
   loading = false;
   passwordsMatch: boolean = true;
   alertSubscription: Subscription | null = null;
@@ -60,11 +61,13 @@ export default class ProfileComponent implements OnInit, OnDestroy {
   loadUserProfile() {
     this.profileService.getUserProfile().subscribe({
       next: (data) => {
-        this.user = data.user;
+        this.user = data.user; // Aquí obtenemos el usuario y los roles
+        const userRole = data.user.roles.length > 0 ? data.user.roles[0].name : 'Sin rol'; // Asumiendo que solo se toma un rol
         this.profileForm.patchValue({
           email: this.user.email,
           name: this.user.name 
         });
+        this.user.role = userRole;  // Asignar el rol extraído al objeto user
       },
       error: (err) => {
         console.error('Error al cargar el perfil', err);

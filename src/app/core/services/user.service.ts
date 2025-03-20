@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8000/api/users'; // URL de tu API
+  private apiUrl = 'http://localhost:8000/api/users';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -30,11 +30,13 @@ export class UserService {
 
   // Crear un nuevo usuario
   createUser(user: any): Observable<any> {
+    // Enviar también los roles en el cuerpo de la petición
     return this.http.post(this.apiUrl, user, { headers: this.getAuthHeaders() });
   }
 
   // Actualizar un usuario existente
   updateUser(user: any): Observable<any> {
+    // Enviar también los roles en el cuerpo de la petición
     return this.http.put(`${this.apiUrl}/${user.id}`, user, { headers: this.getAuthHeaders() });
   }
 
@@ -48,6 +50,4 @@ export class UserService {
     const url = `${this.apiUrl}/search?query=${query}`;
     return this.http.get<any>(url, { headers: this.getAuthHeaders() });
   }
-
-
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { UserService } from '../../core/services/user.service';
+import { RoleService } from '../../core/services/role.service';
 import { AlertService } from '../../core/services/alert.service';
 import { FormsModule } from '@angular/forms';
 import { AlertComponent } from '../../shared/components/alert/alert/alert.component';
@@ -15,32 +16,54 @@ import { AlertComponent } from '../../shared/components/alert/alert/alert.compon
 })
 export default class AdmusuariosComponent implements OnInit {
   users: any[] = [];
-  modalAbierto = false; // Estado del modal
-  modalConfirmacionEliminacionAbierto = false; // Estado del modal de confirmación de eliminación
-  esEdicion = false; // Controla si estamos en modo de edición
-  userIdToDelete: number | null = null; // Guardar el ID del usuario a eliminar
-  searchQuery: string = '';  // Variable para almacenar el término de búsqueda
+  rolesDisponibles: string[] = []; // Lista dinámica de roles desde el backend
+  modalAbierto = false;
+  modalConfirmacionEliminacionAbierto = false;
+  esEdicion = false;
+  userIdToDelete: number | null = null;
+  searchQuery: string = '';
 
-  // Este objeto será reutilizado para la creación y edición de usuarios
+  // Ahora los roles son un array en lugar de un solo string
   nuevoUsuario = {
     id: null,
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
-    role: 'user'
+    role: '' // Usamos un solo rol, no un arreglo
   };
 
-  constructor(private userService: UserService, private alertService: AlertService) { }
+  dropdownOpen: boolean = false; // Estado del dropdown
+  
+  // Método para abrir o cerrar el dropdown
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  // Método para seleccionar una opción del dropdown
+  selectOption(option: string) {
+    this.nuevoUsuario.role = option;
+    this.dropdownOpen = false; // Cerrar el dropdown después de seleccionar
+  }
+
+  constructor(
+    private userService: UserService,
+    private roleService: RoleService,  // Inyectamos el servicio de roles
+    private alertService: AlertService
+  ) {}
 
   ngOnInit(): void {
     this.loadUsers();
+    this.loadRoles(); // Cargar roles dinámicamente
   }
 
   loadUsers(): void {
     this.userService.getUsers().subscribe({
-      next: (data) => {
-        this.users = data;
+      next: (data: any[]) => {
+        this.users = data.map((user: any) => ({
+          ...user,
+          roles: user.roles ? user.roles.map((r: any) => r.name) : []
+        }));
       },
       error: (error) => {
         console.error('Error cargando usuarios', error);
@@ -49,8 +72,20 @@ export default class AdmusuariosComponent implements OnInit {
     });
   }
 
+  loadRoles(): void {
+    this.roleService.getRoles().subscribe({
+      next: (roles) => {
+        this.rolesDisponibles = roles.map((r: any) => r.name); // Extrae los nombres de roles
+      },
+      error: (error) => {
+        console.error('Error cargando roles', error);
+        this.alertService.showAlert('Error al cargar los roles', 'error');
+      }
+    });
+  }
+
   buscarUsuarios(): void {
-    if (this.searchQuery.length > 2) {  // Solo busca si la longitud es mayor a 2
+    if (this.searchQuery.length > 2) {
       this.userService.searchUsers(this.searchQuery).subscribe({
         next: (data) => {
           this.users = data;
@@ -61,53 +96,52 @@ export default class AdmusuariosComponent implements OnInit {
         }
       });
     } else {
-      this.loadUsers(); // Si no hay búsqueda, recarga todos los usuarios
+      this.loadUsers();
     }
   }
 
   abrirModal(): void {
     this.modalAbierto = true;
-    this.esEdicion = false; // Por defecto, es creación
+    this.esEdicion = false;
     this.resetFormulario();
   }
 
   cerrarModal(): void {
     this.modalAbierto = false;
-    this.resetFormulario(); // Resetear formulario al cerrar modal
+    this.resetFormulario();
   }
 
-  // Resetear el formulario a su estado inicial
   resetFormulario(): void {
-    this.nuevoUsuario = { id: null, name: '', email: '', password: '', password_confirmation: '', role: 'user' };
+    this.nuevoUsuario = { id: null, name: '', email: '', password: '', password_confirmation: '', role: '' };
   }
 
-  // Esta función se llama cuando el usuario quiere editar
   editarUsuario(user: any): void {
-    this.nuevoUsuario = { ...user };  // Rellenamos los campos del formulario con los datos del usuario
-    this.esEdicion = true;  // Establecer que estamos en modo edición
-    this.modalAbierto = true;  // Abrimos el modal
+    this.nuevoUsuario = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      password: '',
+      password_confirmation: '',
+      role: user.roles.length > 0 ? user.roles[0] : '' // Selecciona el primer rol
+    };
+    this.esEdicion = true;
+    this.modalAbierto = true;
   }
-
   crearUsuario(): void {
     if (this.esEdicion) {
-      // Si estamos en modo edición, llamamos a la función para editar
       this.editarUsuarioBackend();
     } else {
       this.userService.createUser(this.nuevoUsuario).subscribe({
         next: () => {
           this.alertService.showAlert('Usuario creado correctamente', 'success');
           this.cerrarModal();
-          this.loadUsers(); // Recargar usuarios después de crear uno nuevo
+          this.loadUsers();
         },
         error: (error) => {
           console.error('Error creando usuario', error);
-          
-          // Verificamos si hay errores específicos (como validaciones)
           if (error.error && error.error.email) {
-            // Si el backend envía un error en el campo email
             this.alertService.showAlert(error.error.email[0], 'error');
           } else {
-            // Si no, mostramos un mensaje genérico
             this.alertService.showAlert('Hubo un error creando el usuario', 'error');
           }
         }
@@ -116,11 +150,21 @@ export default class AdmusuariosComponent implements OnInit {
   }
 
   editarUsuarioBackend(): void {
-    this.userService.updateUser(this.nuevoUsuario).subscribe({
+    const userActualizado: any = { ...this.nuevoUsuario };
+  
+    if (!userActualizado.password) {
+      delete userActualizado.password;
+      delete userActualizado.password_confirmation;
+    }
+  
+    // Solo se necesita enviar 'role' y no 'roles'
+    delete userActualizado.roles; // Eliminar el campo roles si existe
+  
+    this.userService.updateUser(userActualizado).subscribe({
       next: () => {
         this.alertService.showAlert('Usuario actualizado correctamente', 'success');
         this.cerrarModal();
-        this.loadUsers(); // Recargar usuarios después de actualizar uno
+        this.loadUsers();
       },
       error: (error) => {
         console.error('Error actualizando usuario', error);
@@ -129,27 +173,27 @@ export default class AdmusuariosComponent implements OnInit {
     });
   }
 
-  // Método para eliminar usuario - muestra el modal de confirmación
   deleteUser(id: number): void {
-    this.userIdToDelete = id; // Guardar el ID del usuario a eliminar
-    this.modalConfirmacionEliminacionAbierto = true; // Mostrar el modal de confirmación
+    this.userIdToDelete = id;
+    this.modalConfirmacionEliminacionAbierto = true;
   }
 
-  // Método que se ejecuta cuando el usuario confirma la eliminación
   deleteConfirmed(): void {
     if (this.userIdToDelete) {
       this.userService.deleteUser(this.userIdToDelete).subscribe({
         next: () => {
           this.alertService.showAlert('Usuario eliminado correctamente', 'success');
-          this.loadUsers(); // Recargar usuarios después de eliminar uno
-          this.modalConfirmacionEliminacionAbierto = false; // Cerrar el modal
+          this.loadUsers();
+          this.modalConfirmacionEliminacionAbierto = false;
         },
         error: (error) => {
           console.error('Error eliminando usuario', error);
           this.alertService.showAlert('Hubo un error al eliminar el usuario', 'error');
-          this.modalConfirmacionEliminacionAbierto = false; // Cerrar el modal
+          this.modalConfirmacionEliminacionAbierto = false;
         }
       });
     }
   }
+
+  
 }

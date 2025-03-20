@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,11 @@ export class ProfileService {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    });
+    }).pipe(
+      tap(response => {
+        console.log(response);  // Aquí puedes ver si "roles" está llegando correctamente
+      })
+    );
   }
 
   // Actualiza los datos del perfil
