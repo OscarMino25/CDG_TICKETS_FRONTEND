@@ -96,7 +96,7 @@
         </ul>
       </li>
       
-      <li>
+      <li *ngIf="hasPermission('editar usuario')">
         <a routerLink="/otra">
           <button
             routerLinkActive="bg-gradient-to-tr from-blue-600 to-blue-400 shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 active:opacity-[0.85]"

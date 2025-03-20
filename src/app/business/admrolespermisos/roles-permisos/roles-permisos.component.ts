@@ -76,14 +76,15 @@ export default class RolesPermissionsComponent {
 
   crearOeditarRol() {
     if (this.esEdicion) {
-      // Llamar a la API para editar el rol
-      this.roleService.updateRole(this.nuevoRol.id, this.nuevoRol).subscribe(() => {
+      // Llamar a la API para actualizar los permisos del rol
+      const permisosSeleccionados = this.permisosDisponibles.filter(p => p.selected).map(p => p.name); // Enviar los nombres de los permisos seleccionados
+      this.roleService.assignPermissions(this.nuevoRol.id, permisosSeleccionados).subscribe(() => {
         this.loadRoles();
         this.cerrarModal();
       });
     } else {
       // Llamar a la API para crear un rol
-      const permisosSeleccionados = this.permisosDisponibles.filter(p => p.selected).map(p => p.name);
+      const permisosSeleccionados = this.permisosDisponibles.filter(p => p.selected).map(p => p.name); // Usamos los nombres de los permisos seleccionados en la creación
       this.roleService.createRole({ name: this.nuevoRol.name, permissions: permisosSeleccionados }).subscribe(() => {
         this.loadRoles();
         this.cerrarModal();

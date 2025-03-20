@@ -46,7 +46,7 @@ export class RoleService {
 
   // Asignar permisos a un rol
   assignPermissions(roleId: string, permissions: any[]): Observable<any> {
-    return this.http.put(`/api/roles/${roleId}/permissions`, { permissions }, { headers: this.getAuthHeaders() });
+    return this.http.put(`http://localhost:8000/api/roles/${roleId}/permissions`, { permissions }, { headers: this.getAuthHeaders() });
   }
 
   // Actualizar un rol

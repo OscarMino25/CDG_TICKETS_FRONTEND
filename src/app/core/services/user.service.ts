@@ -50,4 +50,14 @@ export class UserService {
     const url = `${this.apiUrl}/search?query=${query}`;
     return this.http.get<any>(url, { headers: this.getAuthHeaders() });
   }
+
+   // Obtener los roles del usuario
+   getUserRoles(): Observable<any> {
+    return this.http.get<any>('http://localhost:8000/api/me', { headers: this.getAuthHeaders() });
+  }
+
+  // Obtener los permisos del usuario
+  getUserPermissions(): Observable<any> {
+    return this.http.get<any>('http://localhost:8000/api/mis-permisos', { headers: this.getAuthHeaders() });
+  }
 }
