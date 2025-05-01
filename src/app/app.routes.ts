@@ -60,6 +60,13 @@ export const routes: Routes = [
                 data: { breadcrumb: 'Administracion / Motivos' }
             },
 
+            {
+                path: 'estados',
+                loadComponent: () => import('./business/estados/estados.component'),
+                canActivate:[AuthGuard],
+                data: { breadcrumb: 'Administracion / Estados' }
+            },
+
 
             {
                 path: '',
