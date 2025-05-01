@@ -54,6 +54,14 @@ export const routes: Routes = [
             },
 
             {
+                path: 'motivos',
+                loadComponent: () => import('./business/motivos/motivos.component'),
+                canActivate:[AuthGuard],
+                data: { breadcrumb: 'Administracion / Motivos' }
+            },
+
+
+            {
                 path: '',
                 redirectTo: 'dashboard',
                 pathMatch: 'full'
