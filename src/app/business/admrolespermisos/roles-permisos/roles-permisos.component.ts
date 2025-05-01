@@ -25,7 +25,6 @@ interface Rol {
   standalone: true,
   templateUrl: './roles-permisos.component.html',
   styleUrls: ['./roles-permisos.component.css'],
-  providers: [RoleService, PermissionService],  // Aquí agregamos los servicios en providers
   imports: [AlertComponent, CommonModule, FormsModule,RouterLink, RouterLinkActive],
 })
 export default class RolesPermissionsComponent {

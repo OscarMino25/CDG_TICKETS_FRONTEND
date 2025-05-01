@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { AuthenticatedGuard } from './core/guards/authenticated.guard';
 
+
 export const routes: Routes = [
     {
         path: '',
@@ -37,6 +38,21 @@ export const routes: Routes = [
                 canActivate:[AuthGuard],
                 data: { breadcrumb: 'Administración / Administración de Roles y Permisos' }
             },
+
+            {
+                path: 'catalogos',
+                loadComponent: () => import('./business/catalogos/listado/listado.component'),
+                canActivate:[AuthGuard],
+                data: { breadcrumb: 'Administracion / Catálogo' }
+            },
+
+            {
+                path: 'sla',
+                loadComponent: () => import('./business/sla/sla.component'),
+                canActivate:[AuthGuard],
+                data: { breadcrumb: 'Administracion / Sla' }
+            },
+
             {
                 path: '',
                 redirectTo: 'dashboard',
